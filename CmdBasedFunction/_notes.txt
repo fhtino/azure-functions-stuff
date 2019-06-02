@@ -1,0 +1,8 @@
+﻿
+* Startup
+https://docs.microsoft.com/en-us/azure/azure-functions/functions-dotnet-dependency-injection
+ - Microsoft.Azure.Functions.Extensions
+ - Microsoft.NET.Sdk.Functions    >= 1.0.28
+
+
+
