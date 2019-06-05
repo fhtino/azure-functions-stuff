@@ -22,6 +22,9 @@ namespace CmdBasedFunction
             log.LogInformation($"CmdProcessing : {myQueueItem}");
 
             var inputCmd = JsonConvert.DeserializeObject<Cmd>(myQueueItem);
+
+            var runLogger = new RunLogger("CmdProcessing", inputCmd.Name, myQueueItem, "::1");
+
             var outputCmdList = await CmdProcessor.Execute(inputCmd, log);
 
             if (outputCmdList != null)
@@ -31,6 +34,9 @@ namespace CmdBasedFunction
                     .ToList()
                     .ForEach(outputQueueItems.Add);
             }
+
+            runLogger.End(-1);
         }
+
     }
 }

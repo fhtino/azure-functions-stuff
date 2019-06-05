@@ -23,11 +23,15 @@ namespace CmdBasedFunction
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
+            var runLogger = new RunLogger("EnqueueMULTI", "");
+
             string n = req.Query["n"];
             if (String.IsNullOrWhiteSpace(n))
                 n = "1";
 
             outputCmds.Add(new Cmd("MULTI", "count", int.Parse(n).ToString()));
+
+            runLogger.End(-1);
 
             return (ActionResult)new OkObjectResult($"n={n}");
         }

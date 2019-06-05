@@ -16,7 +16,12 @@ namespace CmdBasedFunction
             ILogger log)
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
+
+            //System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name
+
+            var runLogger = new RunLogger("EnqueueNOP", "");
             outCmd = new Cmd("NOP");
+            runLogger.End(-1);
         }
     }
 }
