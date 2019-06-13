@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CmdBasedFunctionLIB", "CmdB
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZDebug1", "ZDebug1\ZDebug1.csproj", "{295FD1BF-4002-43EA-B02E-AA23B4EFD2E7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicFunctions", "BasicFunctions\BasicFunctions.csproj", "{6CAC989E-B44B-4F05-A26B-BD95694C7852}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{295FD1BF-4002-43EA-B02E-AA23B4EFD2E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{295FD1BF-4002-43EA-B02E-AA23B4EFD2E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{295FD1BF-4002-43EA-B02E-AA23B4EFD2E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CAC989E-B44B-4F05-A26B-BD95694C7852}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CAC989E-B44B-4F05-A26B-BD95694C7852}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CAC989E-B44B-4F05-A26B-BD95694C7852}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CAC989E-B44B-4F05-A26B-BD95694C7852}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
