@@ -1,24 +1,33 @@
 using System;
-using System.Threading;
+using System.IO;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Host;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using System.Threading;
+
 
 namespace BasicFunctions
 {
-    public static class LongRunningTimer
+
+    public static class LongRunningHttp
     {
-        [FunctionName("LongRunningTimer")]
-        public static async Task Run(
-            [TimerTrigger("0 0 * * * *")]TimerInfo myTimer,
+        [FunctionName("LongRunningHttp")]
+        public static async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             Microsoft.Azure.WebJobs.ExecutionContext context,
             CancellationToken token,
             ILogger log)
         {
-            log.LogInformation($"START - InvocationId={context.InvocationId} - D");
 
-            int k = 5;
+            log.LogInformation($"START - InvocationId={context.InvocationId} - CC");
+
+            int.TryParse(req.Query["k"], out int k);
+            if (k == 0) k = 5;
+            if (k > 60) k = 60;
 
             try
             {
@@ -40,6 +49,9 @@ namespace BasicFunctions
             }
 
             log.LogInformation($"END");
+
+            return (ActionResult)new OkObjectResult($"Hello, world!  k={k}");
         }
     }
+
 }
