@@ -20,6 +20,8 @@ Add a configuration key in the format
 It works both in local.settings.json (visual studio) and on Azure.  
 Ref: https://docs.microsoft.com/en-us/azure/azure-functions/disable-function
 
+### Locked dll files during deploy
+In configuration, add key MSDEPLOY_RENAME_LOCKED_FILES = 1
 
 ### Hosting
 https://github.com/Azure/azure-functions-host/
