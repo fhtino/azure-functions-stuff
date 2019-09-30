@@ -9,6 +9,32 @@
 |JsonProducer|Http|Queue|
 |InvoiceAPI|Http|-|REST API for fake invoices|
 
+### FunctionsStartup 
+Steps:
+ - Add reference to:
+   - Microsoft.Azure.Functions.Extensions
+   - Microsoft.NET.Sdk.Functions  >= 1.0.28
+ - Create a Startup class, extending FunctionsStartup and overriding Configure method
+ - Mark the assembly with FunctionsStartup attribute
+
+```
+using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+
+[assembly: FunctionsStartup(typeof(BasicFunctions.Startup))]
+
+namespace BasicFunctions
+{
+    public class Startup : FunctionsStartup
+    {
+        public override void Configure(IFunctionsHostBuilder builder)
+        {
+            // code...
+        }
+    }
+}
+```
+
+Details: https://docs.microsoft.com/en-us/azure/azure-functions/functions-dotnet-dependency-injection
 
 
 ### Disable a function
@@ -27,6 +53,7 @@ In configuration, add key MSDEPLOY_RENAME_LOCKED_FILES = 1
 https://github.com/Azure/azure-functions-host/
 
 
+## Misc
 
 ### Graceful shutdown issues : experiments
 
