@@ -8,6 +8,7 @@
 |QueueConsumer|Queue|-|
 |JsonProducer|Http|Queue|
 |InvoiceAPI|Http|-|REST API for fake invoices|
+|CustomMetrics|Http|-|Application Insights traces and custom metrics|
 
 ### FunctionsStartup 
 Steps:
@@ -48,6 +49,19 @@ Ref: https://docs.microsoft.com/en-us/azure/azure-functions/disable-function
 
 ### Locked dll files during deploy
 In configuration, add key MSDEPLOY_RENAME_LOCKED_FILES = 1
+
+### Application Insights custom data (CustomMetrics)
+Azure Functions automatically sends data to Application Insights if APPINSIGHTS_INSTRUMENTATIONKEY is present.
+To manually use TelemetryClient from code, e.g. for sending custom Trace or Metric, it's required to add a reference to App Insight Nuget packages.  
+Do not add "low-level" packages directly but, instead, add only Microsoft.Azure.WebJobs.Logging.ApplicationInsights It will bring all required packages in a compatible way to the hosting environment. More details here: https://github.com/MicrosoftDocs/azure-docs/issues/35181#issuecomment-512288993  
+If Nuget packages are not compatible OR key APPINSIGHTS_INSTRUMENTATIONKEY is missing, you'll get errors like:  
+``` 
+Microsoft.Extensions.DependencyInjection.Abstractions: Unable to resolve service  
+for type 'Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration'   
+while attempting to activate 'BasicFunctions.CustomMetrics'
+``` 
+More information about App Insights in Func for https://docs.microsoft.com/en-us/azure/azure-monitor/app/azure-functions-supported-features  (a bit outdated)  
+**Note:** functions must be declared as not static and a constructor is required to get the pre-configured TelemetryClient.
 
 ### Hosting
 https://github.com/Azure/azure-functions-host/
