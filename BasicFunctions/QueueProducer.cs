@@ -23,6 +23,8 @@ namespace BasicFunctions
             CancellationToken token,
             ILogger log)
         {
+            // Documentation: https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-queue?tabs=csharp
+
             log.LogInformation("START");
 
             int.TryParse(req.Query["k"], out int k);

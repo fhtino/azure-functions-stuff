@@ -1,4 +1,6 @@
-﻿## Overview
+﻿# Notes...
+
+## Overview
 
 |Function|Trigger|Binding|Notes|
 |-|-|
@@ -9,6 +11,23 @@
 |JsonProducer|Http|Queue|
 |InvoiceAPI|Http|-|REST API for fake invoices|
 |CustomMetrics|Http|-|Application Insights traces and custom metrics|
+
+### Configuration file
+Before running, add a local.settings.json file with required settings.  
+Example:
+```
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "AzureWebJobs.LongRunningTimer.Disabled": "true",
+    "AzureWebJobs.QueueConsumer.Disabled": "false",
+    "azstoragedemo": "UseDevelopmentStorage=true",
+    "APPINSIGHTS_INSTRUMENTATIONKEY": "xxxxxxxxx"
+  }
+}
+```
 
 ### FunctionsStartup 
 Steps:
@@ -60,7 +79,10 @@ Microsoft.Extensions.DependencyInjection.Abstractions: Unable to resolve service
 for type 'Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration'   
 while attempting to activate 'BasicFunctions.CustomMetrics'
 ``` 
-More information about App Insights in Func for https://docs.microsoft.com/en-us/azure/azure-monitor/app/azure-functions-supported-features  (a bit outdated)  
+More information about App Insights in Functions:
+ - https://docs.microsoft.com/en-us/azure/azure-monitor/app/azure-functions-supported-features  (a bit outdated)  
+ - https://docs.microsoft.com/en-us/azure/azure-functions/functions-monitoring#log-custom-telemetry-in-c-functions    
+ 
 **Note:** functions must be declared as not static and a constructor is required to get the pre-configured TelemetryClient.
 
 ### Hosting
