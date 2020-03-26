@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body style="font-family:Arial; font-size:12px;">
+    <script src="https://www.google.com/recaptcha/api.js?render=6LdsMOQUAAAAAJ8k0PjhOMMGKpFxrpWqE_-w5WQg"></script>
+    <script>
+        grecaptcha.ready(function () {
+            grecaptcha
+                .execute('6LdsMOQUAAAAAJ8k0PjhOMMGKpFxrpWqE_-w5WQg', { action: 'homepage' })
+                .then(function (token) {
+                    document.getElementById("reCapToken").value = token;
+                    //document.theform.submit();  // auto-submit if required
+                });
+        });
+    </script>
+    <h1>This is a reCapthca 3 test page</h1>
+    <br />    
+    <br />
+    <br />
+    <form method="post" id="theform" name="theform">
+        <input type="text" id="t1" name="t1" />
+        <input type="hidden" id="reCapToken" name="reCapToken" />
+        <input type="submit" />
+    </form>
+    <br />
+    <br />
+    <br />
+</body>
+</html>

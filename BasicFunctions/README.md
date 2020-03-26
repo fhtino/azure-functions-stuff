@@ -11,6 +11,7 @@
 |JsonProducer|Http|Queue|
 |InvoiceAPI|Http|-|REST API for fake invoices|
 |CustomMetrics|Http|-|Application Insights traces and custom metrics|
+|reCap | Http | - | reCaptcha in Azure Functions (html output) |
 
 ### Configuration file
 Before running, add a local.settings.json file with required settings.  
@@ -73,7 +74,7 @@ In configuration, add key MSDEPLOY_RENAME_LOCKED_FILES = 1
 Azure Functions automatically sends data to Application Insights if APPINSIGHTS_INSTRUMENTATIONKEY is present.
 To manually use TelemetryClient from code, e.g. for sending custom Trace or Metric, it's required to add a reference to App Insight Nuget packages.  
 Do not add "low-level" packages directly but, instead, add only Microsoft.Azure.WebJobs.Logging.ApplicationInsights It will bring all required packages in a compatible way to the hosting environment. More details here: https://github.com/MicrosoftDocs/azure-docs/issues/35181#issuecomment-512288993  
-If Nuget packages are not compatible OR key APPINSIGHTS_INSTRUMENTATIONKEY is missing, you'll get errors like:  
+If Nuget packages are not compatible **OR** the key APPINSIGHTS_INSTRUMENTATIONKEY is missing, you'll get errors like:  
 ``` 
 Microsoft.Extensions.DependencyInjection.Abstractions: Unable to resolve service  
 for type 'Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration'   
