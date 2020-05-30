@@ -29,10 +29,7 @@ namespace ZDebug1
             Console.WriteLine(json1bis);
             Console.WriteLine(json2bis);
 
-            // ----------------------------------------------------------
-
-
-            // eleonora prova
+            // ----------------------------------------------------------            
 
         }
     }

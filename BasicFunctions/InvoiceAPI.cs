@@ -64,6 +64,7 @@ namespace BasicFunctions
             if (Items.Count == 0)
                 CreateFakeInvoices();
 
+            await Task.CompletedTask;
             return new OkObjectResult(Items);
         }
 
@@ -77,6 +78,8 @@ namespace BasicFunctions
         {
 
             var item = Items.FirstOrDefault(x => x.ID == id);
+
+            await Task.CompletedTask;
 
             if (item != null)
                 return new OkObjectResult(item);

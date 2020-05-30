@@ -13,13 +13,14 @@ namespace BasicFunctions
     {
         [FunctionName("QueueConsumer")]
         public static async Task Run(
-            [QueueTrigger("demoqueue1", Connection = "azstoragedemo")]string myQueueItem,
+            [QueueTrigger("demoqueue1", Connection = "azstoragedemo")] string myQueueItem,
             Microsoft.Azure.WebJobs.ExecutionContext context,
             CancellationToken token,
             ILogger log)
         {
             log.LogWarning($"Processing: {myQueueItem}");
-            await Task.Delay(100);
+            Utility.FakeLongRunning(5);
+            await Task.Delay(1);
         }
     }
 }

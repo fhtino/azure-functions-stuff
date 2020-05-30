@@ -8,13 +8,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Threading;
-
+using System.Web.Http;
 
 namespace BasicFunctions
 {
 
     public static class LongRunningHttp
     {
+
         [FunctionName("LongRunningHttp")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
@@ -28,16 +29,17 @@ namespace BasicFunctions
             int.TryParse(req.Query["k"], out int k);
             if (k == 0) k = 5;
             if (k > 60) k = 60;
-
+            
             try
             {
-                // fake long run
+                // fake long running
                 for (int i = 0; i < k; i++)
                 {
                     log.LogInformation($"i={i}");
                     if (token.IsCancellationRequested)
                     {
                         log.LogInformation("*** CancellationToken ***");
+                        // if need to exit with error: return new ExceptionResult(new ApplicationException("STOP"), false);
                     }
                     await Task.Delay(1000);
                 }

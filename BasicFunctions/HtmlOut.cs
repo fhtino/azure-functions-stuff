@@ -19,10 +19,7 @@ namespace BasicFunctions
             ILogger log,
             ExecutionContext execContext)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
-
             string html;
-
             var mode = req.Query["mode"];
 
             switch (mode)
@@ -33,18 +30,20 @@ namespace BasicFunctions
 
                 case "file1":
                     var hosting = req.HttpContext.RequestServices.GetService(typeof(IHostingEnvironment)) as IHostingEnvironment;
-                    html = File.ReadAllText(Path.Combine(hosting.ContentRootPath, "page1.html"));
+                    html = File.ReadAllText(Path.Combine(hosting.ContentRootPath, "Data/page1.html"));
                     break;
 
                 case "file2":
                     // ExecutionContext - https://github.com/Azure/azure-functions-host/wiki/Retrieving-information-about-the-currently-running-function
-                    html = File.ReadAllText(Path.Combine(execContext.FunctionAppDirectory, "page1.html"));
+                    html = File.ReadAllText(Path.Combine(execContext.FunctionAppDirectory, "Data/page1.html"));
                     break;
 
                 default:
                     html = "default";
                     break;
             }
+
+            await Task.CompletedTask;
 
             return
                 new ContentResult()

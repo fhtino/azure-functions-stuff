@@ -35,9 +35,9 @@ namespace BasicFunctions
             {
                 // Note: items are immediatelly added to the output queue and not 
                 //       temporary stored in outputQueueItems and all added at the end.
-                outputQueueItems.Add("NOP#1#" + k);
-                outputQueueItems2.Add("NOP#2#" + k);
-                await Task.Delay(500);
+                outputQueueItems.Add("NOP#1#" + i);
+                outputQueueItems2.Add("NOP#2#" + i);
+                await Task.Delay(100);
             }
 
             log.LogInformation("END");

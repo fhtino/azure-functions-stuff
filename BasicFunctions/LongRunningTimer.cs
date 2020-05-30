@@ -11,14 +11,20 @@ namespace BasicFunctions
     {
         [FunctionName("LongRunningTimer")]
         public static async Task Run(
-            [TimerTrigger("0 0 * * * *")]TimerInfo myTimer,
+            [TimerTrigger("0 * * * * *")] TimerInfo myTimer,
             Microsoft.Azure.WebJobs.ExecutionContext context,
             CancellationToken token,
             ILogger log)
         {
             log.LogInformation($"START - InvocationId={context.InvocationId} - D");
 
-            int k = 5;
+            int k = 30;
+
+            token.Register(() =>
+            {                
+                log.LogInformation("*** CancellationToken ***");
+                Thread.Sleep(5000);
+            });
 
             try
             {
@@ -26,10 +32,11 @@ namespace BasicFunctions
                 for (int i = 0; i < k; i++)
                 {
                     log.LogInformation($"i={i}");
-                    if (token.IsCancellationRequested)
-                    {
-                        log.LogInformation("*** CancellationToken ***");
-                    }
+                    // This does not work as expected in Timer triggered functions
+                    //if (token.IsCancellationRequested)
+                    //{
+                    //    log.LogInformation("*** CancellationToken ***");
+                    //}
                     await Task.Delay(1000);
                 }
             }

@@ -12,11 +12,13 @@
 |InvoiceAPI|Http|-|REST API for fake invoices|
 |CustomMetrics|Http|-|Application Insights traces and custom metrics|
 |reCap | Http | - | reCaptcha in Azure Functions (html output) |
+|FoodDemo | Http | - | Food demo |
+
 
 ### Configuration file
 Before running, add a local.settings.json file with required settings.  
 Example:
-```
+```json
 {
   "IsEncrypted": false,
   "Values": {
@@ -25,7 +27,8 @@ Example:
     "AzureWebJobs.LongRunningTimer.Disabled": "true",
     "AzureWebJobs.QueueConsumer.Disabled": "false",
     "azstoragedemo": "UseDevelopmentStorage=true",
-    "APPINSIGHTS_INSTRUMENTATIONKEY": "xxxxxxxxx"
+    "APPINSIGHTS_INSTRUMENTATIONKEY": "xxxxxxxxx",
+    "reCaptchaPrivateKey": "rrrrrrrrr"
   }
 }
 ```
@@ -38,7 +41,7 @@ Steps:
  - Create a Startup class, extending FunctionsStartup and overriding Configure method
  - Mark the assembly with FunctionsStartup attribute
 
-```
+```csharp
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 
 [assembly: FunctionsStartup(typeof(BasicFunctions.Startup))]
@@ -57,6 +60,13 @@ namespace BasicFunctions
 
 Details: https://docs.microsoft.com/en-us/azure/azure-functions/functions-dotnet-dependency-injection
 
+### CORS
+In local.settings.json
+```json
+  "Host": {
+    "CORS": "*"
+  }
+```
 
 ### Disable a function
 
@@ -94,7 +104,7 @@ https://github.com/Azure/azure-functions-host/
 
 ### Graceful shutdown issues : experiments
 
-On a running app-function, I deply a new version from visual studio. The app restarts. This is what happens to running fucntions.
+On a running app-function, I deploy a new version from visual studio. The app restarts. This is what happens to running fucntions.
 
 Http triggered fucntions seem to honor the cancellationn token. Timeout around 5 seconds.
 
@@ -116,16 +126,25 @@ Http triggered fucntions seem to honor the cancellationn token. Timeout around 5
 2019-08-28T00:43:52  No new trace in the past 1 min(s).
 ```
 
-Timer triggered functions are killed and cancellation token not triggered:
+Timer triggered functions have a different behaviour compared to Http triggered. The shutdown process is faster and checking the token with "if (token.IsCancellationRequested)" is not working as expected. Instead, regiter to the event with:
+token.Register(() => { \... });
+
 ```
-2019-08-28T00:22:20.225 [Information] i=20
-2019-08-28T00:22:21.241 [Information] i=21
-2019-08-28T00:22:22.241 [Information] i=22
-2019-08-28T00:22:23.241 [Information] i=23
-2019-08-28T00:22:23.334 [Information] Assembly reference changes detected. Restarting host...
+[01/06/2020 08:17:40] i=0
+[01/06/2020 08:17:41] i=1
+[01/06/2020 08:17:42] i=2
+[01/06/2020 08:17:43] i=3
+[01/06/2020 08:17:44] i=4
+[01/06/2020 08:17:44] *** CancellationToken ***
+[01/06/2020 08:17:45] i=5
+[01/06/2020 08:17:46] i=6
+[01/06/2020 08:17:47] i=7
+[01/06/2020 08:17:48] i=8
+[01/06/2020 08:17:49] i=9
+[01/06/2020 08:17:49] Host did not shutdown within its allotted time.
 ```
 
-On Timer triggered functions, App Insight events are lost (need to be verified on http function. Perhpas the is not related to azure function itself but is cause by the way IIS kills the app-pool).
+On Timer triggered functions, during shutwodn, App Insight events are lost (need to be verified on http function. Perhpas the is not related to azure function itself but is cause by the way IIS kills the app-pool).
 Kusto query to get items from Appplication Insights.
 
 ```

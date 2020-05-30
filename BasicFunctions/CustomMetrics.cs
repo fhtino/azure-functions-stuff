@@ -35,8 +35,9 @@ namespace BasicFunctions
 
             telemetryClient.TrackEvent("my message");
             telemetryClient.TrackTrace("my other message", SeverityLevel.Error);
-            telemetryClient.GetMetric("mymetricx").TrackValue(DateTime.UtcNow.Millisecond);            
+            telemetryClient.GetMetric("mymetricx").TrackValue(DateTime.UtcNow.Millisecond);
 
+            await Task.CompletedTask;
             return (ActionResult)new OkObjectResult($"Hello, world");
         }
 
