@@ -1,6 +1,7 @@
 ﻿using CmdBasedFunctionLIB;
 using Newtonsoft.Json;
 using System;
+using System.Threading.Tasks;
 
 namespace ZDebug1
 {
@@ -31,6 +32,26 @@ namespace ZDebug1
 
             // ----------------------------------------------------------            
 
+
+            Utility.FakeLongRunning(10, 50).Wait();
+
+        }
+
+
+        public class Utility
+        {
+            public static async Task FakeLongRunning(int seconds, int loadPercentage)
+            {
+                var startDT = DateTime.UtcNow;
+                while (DateTime.UtcNow.Subtract(startDT).TotalSeconds < seconds)
+                {
+                    var dummy = Math.Sin(DateTime.UtcNow.Ticks);
+                    if (DateTime.UtcNow.Millisecond % 100 > loadPercentage)
+                    {
+                        await Task.Delay(100 - loadPercentage);
+                    }
+                }
+            }
         }
     }
 }

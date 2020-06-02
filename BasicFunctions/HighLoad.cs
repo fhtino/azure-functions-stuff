@@ -53,12 +53,12 @@ namespace BasicFunctions
 
 
         [FunctionName("HighLoadDoWork")]
-        public static void HighLoadDoWork(
+        public static async Task  HighLoadDoWork(
             [QueueTrigger(QUEUENAME2, Connection = "azstoragedemo")] string queueItem,
             ILogger log)
         {
             log.LogInformation($"Processing {queueItem}");
-            Utility.FakeLongRunning(5);
+            await Utility.FakeLongRunning(5, 20);
         }
 
 

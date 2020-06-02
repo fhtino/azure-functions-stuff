@@ -19,7 +19,7 @@ namespace BasicFunctions
             ILogger log)
         {
             log.LogWarning($"Processing: {myQueueItem}");
-            Utility.FakeLongRunning(5);
+            await Utility.FakeLongRunning(5, 20);
             await Task.Delay(1);
         }
     }
