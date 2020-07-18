@@ -8,3 +8,5 @@ More details [here](BasicFunctions/README.md)
 ## Command Based Functions
 ...
 
+## Deployment
+[...details](Deployment.md)
