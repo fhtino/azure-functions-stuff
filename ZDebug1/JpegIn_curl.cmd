@@ -1,0 +1,1 @@
+curl  --verbose  --request POST  --header "Content-Type: application/octet-stream"  --data-binary @JpegIn_image.jpg  http://localhost:7071/api/JpegIn
