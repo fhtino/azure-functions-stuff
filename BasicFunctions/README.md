@@ -1,9 +1,9 @@
-﻿# Basci Functions
+﻿# Basic Functions
 
 ## Overview
 
 |Function|Trigger|Binding|Notes|
-|-|-|
+|-|-|-|-|
 |LongRunningTimer|Timer|-|
 |LongRunningHttp|Http|-|
 |QueueProducer|Http|Queue+Queue|
