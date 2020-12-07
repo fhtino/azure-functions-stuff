@@ -1,20 +1,29 @@
 
 # Deployment notes
 
-There are different ways to deploy Azure Functions. Sometimes it's a mess. Just my personal rumbling :(
-
 [*** DRAFT ***]
 
-Options:
+There are different ways of deploying Azure Functions:
  - deploy from Visual Studio : WebDeploy OR ZipDeploy
  - deploy from Azure DevOps : ZipDeploy
- - ... other?
+ - other...
 
+<br/>
+<br/>
 
+## Visual Studio
+ 1. download the Azure Function publish profile file (.pubxml)
+ 2. import it: right click on project --> Publish --> New --> Import Profile
+ 3. deploy the app: right click on project --> Publish --> select the profile --> press [Publish]
+
+<br/>
+<br/>
 
 ## Azure pipelines
 
-### Compile as ZipDeploy (mode I)
+### Build
+
+#### Compile as ZipDeploy (mode I)
 Details here: https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-function-app?view=azure-devops#error-publish-using-zip-deploy-option-is-not-supported-for-msbuild-package-type
 ```yaml
 - task: VSBuild@1
@@ -32,7 +41,7 @@ Details here: https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/depl
     replaceExistingArchive: true
 ```
 
-### Compile as ZipDeploy (mode II)
+#### Compile as ZipDeploy (mode II)
 ```yaml
 - task: DotNetCoreCLI@2
   displayName: 'Publish the project - $(buildConfiguration)'
