@@ -23,8 +23,9 @@ There are different ways of deploying Azure Functions:
 
 ### Build
 
-#### Compile as ZipDeploy (mode I)
-Details here: https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-function-app?view=azure-devops#error-publish-using-zip-deploy-option-is-not-supported-for-msbuild-package-type
+#### Compile for ZipDeploy (mode I) : MSBuild + ArchiveFiles  
+Output: $(build.artifactStagingDirectory)/BasicFunctionsZD.zip  
+[&rarr; Details here](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-function-app?view=azure-devops#error-publish-using-zip-deploy-option-is-not-supported-for-msbuild-package-type)
 ```yaml
 - task: VSBuild@1
   inputs:
@@ -41,15 +42,16 @@ Details here: https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/depl
     replaceExistingArchive: true
 ```
 
-#### Compile as ZipDeploy (mode II)
+#### Compile for ZipDeploy (mode II): dotnet publish with autozip
+Output: $(Build.ArtifactStagingDirectory)/CmdBasedFunctionZD/CmdBasedFunction.zip
 ```yaml
 - task: DotNetCoreCLI@2
-  displayName: 'Publish the project - $(buildConfiguration)'
+  displayName: 'Publish the project - CmdBasedFunction'
   inputs:
     command: 'publish'
-    projects: '**/*.csproj'
+    projects: '**/CmdBasedFunction.csproj'
     publishWebProjects: false
-    arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
+    arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/CmdBasedFunctionZD'
     zipAfterPublish: true
 ```
 
