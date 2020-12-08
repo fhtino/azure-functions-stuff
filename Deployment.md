@@ -23,7 +23,8 @@ There are different ways of deploying Azure Functions:
 
 ### Build
 
-#### Compile for ZipDeploy (mode I) : MSBuild + ArchiveFiles  
+**Compile for ZipDeploy (mode I) : MSBuild + ArchiveFiles**
+
 Output: $(build.artifactStagingDirectory)/BasicFunctionsZD.zip  
 [&rarr; Details here](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-function-app?view=azure-devops#error-publish-using-zip-deploy-option-is-not-supported-for-msbuild-package-type)
 ```yaml
@@ -42,7 +43,8 @@ Output: $(build.artifactStagingDirectory)/BasicFunctionsZD.zip
     replaceExistingArchive: true
 ```
 
-#### Compile for ZipDeploy (mode II): dotnet publish with autozip
+**Compile for ZipDeploy (mode II): dotnet publish with autozip**
+
 Output: $(Build.ArtifactStagingDirectory)/CmdBasedFunctionZD/CmdBasedFunction.zip
 ```yaml
 - task: DotNetCoreCLI@2
@@ -54,6 +56,8 @@ Output: $(Build.ArtifactStagingDirectory)/CmdBasedFunctionZD/CmdBasedFunction.zi
     arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/CmdBasedFunctionZD'
     zipAfterPublish: true
 ```
+<br/>
+<br/>
 
 ### Deployment
 ```yaml
@@ -93,3 +97,20 @@ The output zip must start from the files insiede abc folder and must not have an
 dotnet publish BasicFunctions -c Release -o _temp\abc
 powershell Compress-Archive _temp\abc\* _temp\abc.zip -Force
 ```
+
+### Publish & Download artifacts
+
+ - 'pipeline' version (NEW) : PublishPipelineArtifact@1 DownloadPipelineArtifact@2
+ - 'build' version (OLD) : PublishBuildArtifacts@1 DownloadBuildArtifacts@0 
+
+
+Note: if you use the old PublishBuildArtifacts and get the artifact with DownloadPipelineArtifact, you'lle get this misleading warning.
+```
+##[warning]Please use Download Build Artifact task for downloading Build Artifact type artifact. 
+```
+It should be "use the new PublishPipelineArtifact instead of PublishBuildArtifacts in the source pipeline".
+
+
+
+ [&rarr; documentation](https://docs.microsoft.com/en-us/azure/devops/pipelines/artifacts/build-artifacts?view=azure-devops&tabs=yaml)
+
