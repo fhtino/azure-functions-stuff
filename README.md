@@ -7,5 +7,3 @@ A collection of miscellaneous stuff about Azure Functions: demos, code snippets,
 ## Command Based Functions
 [Command-queue functions](CmdBasedFunction/readme.md)
 
-## Notes
-[Deployment notes](Deployment.md)
