@@ -13,7 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicFunctions", "BasicFunc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C114603D-ADF5-4648-8332-ACC515B3399E}"
 	ProjectSection(SolutionItems) = preProject
-		Deployment.md = Deployment.md
 		README.md = README.md
 	EndProjectSection
 EndProject
