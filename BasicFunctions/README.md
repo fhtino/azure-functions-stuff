@@ -13,6 +13,7 @@
 |CustomMetrics|Http|-|Application Insights traces and custom metrics|
 |reCap | Http | - | reCaptcha in Azure Functions (html output) |
 |FoodDemo | Http | - | Food demo |
+|FloodTheQueue | Http | Queue | Add many items to queue |
 
 
 ### Configuration file
