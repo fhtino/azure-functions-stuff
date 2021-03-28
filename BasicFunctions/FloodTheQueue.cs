@@ -22,13 +22,14 @@ namespace BasicFunctions
         {
             log.LogInformation("START");
 
-            string name = req.Query["param"];
-            
+            int itemsCount = int.Parse(req.Query["itemsCount"]);
+
+            if (itemsCount > 10000) throw new ApplicationException("STOP");
 
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < itemsCount; i++)
             {
-                outputQueueItems.Add($"item_{DateTime.UtcNow.ToString("yyyyMMdd-HHmmss-fff")}_{i}");                
+                outputQueueItems.Add($"item_{DateTime.UtcNow.ToString("yyyyMMdd-HHmmss-fff")}_{i}");
             }
 
 
