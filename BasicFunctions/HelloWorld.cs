@@ -22,6 +22,7 @@ namespace BasicFunctions
             log.LogInformation("start function");
             string name = req.Query["name"];
             string responseMessage = $"Hello, {name}";
+            await Task.CompletedTask;
             return new OkObjectResult(responseMessage);
         }
 
@@ -29,8 +30,8 @@ namespace BasicFunctions
 
         [FunctionName("HelloWorld2")]
         public static async Task<IActionResult> HelloWorld2(
-      [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
-      ILogger log)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+            ILogger log)
         {
             log.LogInformation("start function");
             string name = req.Query["name"];
@@ -38,14 +39,15 @@ namespace BasicFunctions
 
             // In my experiments, content-type is always json if I use anonymous type.
             // With real types, the content negotiaton of OkObjectResult works as expected.
+            await Task.CompletedTask;
             return new OkObjectResult(person);
         }
 
 
         [FunctionName("HelloWorld999")]
         public static async Task<IActionResult> HelloWorld999(
-    [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", "put", "delete", Route = null)] HttpRequest req,
-    ILogger log)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", "put", "delete", Route = null)] HttpRequest req,
+            ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -59,6 +61,7 @@ namespace BasicFunctions
                 ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
                 : $"Hello, {name}. This HTTP triggered function executed successfully.";
 
+            await Task.CompletedTask;
             return new OkObjectResult(responseMessage);
         }
 

@@ -8,6 +8,7 @@
 |LongRunningHttp|Http|-|
 |QueueProducer|Http|Queue+Queue|
 |QueueConsumer|Queue|-|
+|ParamsSignaure 1 & 2 | Http / Timer | Queue | Different way of specifying config parameters |
 |JsonProducer|Http|Queue|
 |InvoiceAPI|Http|-|REST API for fake invoices|
 |CustomMetrics|Http|-|Application Insights traces and custom metrics|

@@ -6,7 +6,7 @@ namespace CmdBasedFunction
 {
     public class Consts
     {
-        public const string CMDQUEUENAME = "cmdqueue";
+        public const string CMDQUEUENAME = "democmdqueue";
         public const string STORAGECONFIGKEY = "AzureWebJobsStorage";
     }
 }
