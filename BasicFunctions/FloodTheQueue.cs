@@ -67,6 +67,23 @@ namespace BasicFunctions
             return (ActionResult)new OkObjectResult($"Work done : {itemsCount} {DateTime.UtcNow.Subtract(startDT).TotalSeconds}");
         }
 
+
+        [FunctionName("FloodTheQueueFromQueue")]
+        public static async Task FloodTheQueueFromQueue(
+            [QueueTrigger("demofloodedqueueinput", Connection = "azstoragedemo")] string inputQueueItem,
+            [Queue("demofloodedqueue", Connection = "azstoragedemo")] ICollector<string> outputQueueItems,
+            ExecutionContext context,
+            ILogger log)
+        {
+            log.LogInformation("START");
+            await Task.CompletedTask;
+            for (int i = 0; i < 1000; i++)
+            {
+                outputQueueItems.Add($"item_{DateTime.UtcNow.ToString("yyyyMMdd-HHmmss-fff")}_{i}");
+            }
+            log.LogInformation("END");
+        }
+
     }
 
 }
