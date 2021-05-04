@@ -18,7 +18,7 @@ namespace BasicFunctions
         [FunctionName("FloodTheQueueSync")]
         public static async Task<IActionResult> FloodTheQueueSync(
                 [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-                [Queue("demofloodedqueue", Connection = "azstoragedemo")] ICollector<string> outputQueueItems,
+                [Queue("demofloodedqueue", Connection = "azstoragedemo2")] ICollector<string> outputQueueItems,
                 ILogger log)
         {
             log.LogInformation("START");
@@ -41,11 +41,40 @@ namespace BasicFunctions
         }
 
 
+        [FunctionName("FloodTheQueueSync2")]
+        public static async Task<IActionResult> FloodTheQueueSync2(
+                [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+                [Queue("demofloodedqueue", Connection = "azstoragedemo2")] ICollector<string> outputQueueItems,
+                ILogger log)
+        {
+            log.LogInformation("START");
+            var startDT = DateTime.UtcNow;
+
+            await Task.CompletedTask;
+
+            int itemsCount = int.Parse(req.Query["itemsCount"]);
+            if (itemsCount > 10000) throw new ApplicationException("STOP");
+
+            var items = new List<string>();
+            for (int i = 0; i < itemsCount; i++)
+            {
+                items.Add($"item_{DateTime.UtcNow.ToString("yyyyMMdd-HHmmss-fff")}_{i}");
+            }
+
+            log.LogInformation("Enqueing start");
+            items.ForEach(outputQueueItems.Add);
+            log.LogInformation("Enqueing end");
+
+            log.LogInformation("END");
+            return (ActionResult)new OkObjectResult($"Work done : {itemsCount} {DateTime.UtcNow.Subtract(startDT).TotalSeconds}");
+        }
+
+
 
         [FunctionName("FloodTheQueueAsync")]
         public static async Task<IActionResult> FloodTheQueueAsync(
                 [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-                [Queue("demofloodedqueue", Connection = "azstoragedemo")] IAsyncCollector<string> outputQueueItems,
+                [Queue("demofloodedqueue", Connection = "azstoragedemo2")] IAsyncCollector<string> outputQueueItems,
                 ILogger log)
         {
             log.LogInformation("START");
@@ -70,19 +99,59 @@ namespace BasicFunctions
 
         [FunctionName("FloodTheQueueFromQueue")]
         public static async Task FloodTheQueueFromQueue(
-            [QueueTrigger("demofloodedqueueinput", Connection = "azstoragedemo")] string inputQueueItem,
-            [Queue("demofloodedqueue", Connection = "azstoragedemo")] ICollector<string> outputQueueItems,
+            [QueueTrigger("demofloodedqueueinput", Connection = "azstoragedemo2")] string inputQueueItem,
+            [Queue("demofloodedqueue", Connection = "azstoragedemo2")] ICollector<string> outputQueueItems,
             ExecutionContext context,
             ILogger log)
         {
             log.LogInformation("START");
             await Task.CompletedTask;
-            for (int i = 0; i < 1000; i++)
+
+            var items = new List<string>();
+            for (int i = 0; i < 10000; i++)
             {
-                outputQueueItems.Add($"item_{DateTime.UtcNow.ToString("yyyyMMdd-HHmmss-fff")}_{i}");
-            }
+                items.Add($"item_{DateTime.UtcNow.ToString("yyyyMMdd-HHmmss-fff")}_{i}");
+            }            
+
+            log.LogInformation("Enqueing start");
+            items.ForEach(outputQueueItems.Add);
+            log.LogInformation("Enqueing end");
             log.LogInformation("END");
         }
+
+
+        [FunctionName("FloodTheQueueAuto")]
+        public static async Task FloodTheQueueAuto(
+            [QueueTrigger("demofloodedqueueauto", Connection = "azstoragedemo2")] string inputQueueItem,
+            [Queue("demofloodedqueueauto", Connection = "azstoragedemo2")] ICollector<string> outputQueueItems,
+            ExecutionContext context,
+            ILogger log)
+        {
+            log.LogInformation($"START : {inputQueueItem}");
+            await Task.CompletedTask;
+
+            if (inputQueueItem=="CREATE")
+            {
+                log.LogWarning("Creating items");
+
+                var items = new List<string>();
+                for (int i = 0; i < 1000; i++)
+                {
+                    items.Add($"item_{DateTime.UtcNow.ToString("yyyyMMdd-HHmmss-fff")}_{i}");
+                }
+
+                log.LogWarning("Enqueing start");
+                items.ForEach(outputQueueItems.Add);
+                log.LogWarning("Enqueing end");
+            }
+            else
+            {
+                log.LogInformation($"nothing to do");
+            }
+
+            log.LogInformation("END");
+        }
+
 
     }
 
