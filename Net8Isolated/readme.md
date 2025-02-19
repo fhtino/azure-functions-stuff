@@ -3,6 +3,8 @@
 
 ## Local Development (settings)
 
+local.settings.json
+
 ```json
 {
   "IsEncrypted": false,
