@@ -22,29 +22,27 @@ namespace Net8Isolated
 
             if (myTimer.ScheduleStatus is not null)
             {
+                // NOTE: myTimer.ScheduleStatus is null when run interval is less than 1 minute
                 _logger.LogInformation($"Next timer schedule at: {myTimer.ScheduleStatus.Next}");
             }
         }
 
 
         [Function("KeepMeUpAsync")]
-        public async Task Run2([TimerTrigger("%KeepMeUpTimer%")] TimerInfo myTimer)
+        public async Task Run2([TimerTrigger("%KeepMeUpTimer%")] TimerInfo myTimer, CancellationToken ct)
         {
             _logger.LogInformation($"KeepMeUpAsync...");
+
+            if (ct.IsCancellationRequested)
+            {
+                // do cleanup...
+                return;
+            }
+
             await Task.CompletedTask;
         }
 
-
-        // --- STATIC APPROACH ---
-
-        [Function("KeepMeUpStatic")]
-        public static async Task KeepMeUpStatic([TimerTrigger("* * * * * *")] TimerInfo myTimer, ILogger<KeepMeUp> logger)
-        {
-           // var logger = loggerFactory.CreateLogger<KeepMeUp>();
-            logger.LogInformation($"KeepMeUpStatic...");
-            await Task.CompletedTask;
-        }
-
+ 
 
     }
 

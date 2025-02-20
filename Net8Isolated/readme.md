@@ -16,6 +16,11 @@ local.settings.json
 }
 ```
 
+## Notes
+
+ - Do not use static methods.
+
+
 
 ## Links
 
