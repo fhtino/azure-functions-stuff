@@ -7,7 +7,9 @@ namespace Net8Isolated
 {
     public class KeepMeUp
     {
+
         private readonly ILogger _logger;
+
 
         public KeepMeUp(ILoggerFactory loggerFactory)
         {
@@ -40,9 +42,7 @@ namespace Net8Isolated
             }
 
             await Task.CompletedTask;
-        }
-
- 
+        } 
 
     }
 
