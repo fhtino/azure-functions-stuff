@@ -20,7 +20,15 @@ local.settings.json
 
  - Do not use static methods.
 
+## test...
 
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
 
 ## Links
 

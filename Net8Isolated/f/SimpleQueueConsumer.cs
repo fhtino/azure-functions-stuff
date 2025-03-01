@@ -18,10 +18,28 @@ namespace Net8Isolated
         [Function(nameof(SimpleQueueConsumer))]
         public async Task Run([QueueTrigger("simplequeue", Connection = "DataStorage")] QueueMessage message)
         {
-            _logger.LogInformation($"==>>> message: {message.MessageText} - START");
+            _logger.LogWarning($"CONSUMER ==>>> message: {message.MessageText} - START");
             await Task.Delay(new Random().Next(200, 2000));
-            _logger.LogInformation($"==>>> message: {message.MessageText} - END");
+            _logger.LogWarning($"CONSUMER ==>>> message: {message.MessageText} - END");
+        }
+
+
+        [Function("SimpleQueueConsumer2")]
+        public async Task Run2([QueueTrigger("simplequeue2", Connection = "DataStorage")] QueueMessage message)
+        {
+            _logger.LogWarning($"CONSUMER_2 ==>>> message: {message.MessageText} - START");
+            await Task.Delay(new Random().Next(200, 2000));
+            _logger.LogWarning($"CONSUMER_2 ==>>> message: {message.MessageText} - END");
+        }
+
+        [Function("SimpleQueueConsumer3")]
+        public async Task Run3([QueueTrigger("simplequeue3", Connection = "DataStorage")] QueueMessage message)
+        {
+            _logger.LogWarning($"CONSUMER_3 ==>>> message: {message.MessageText} - START");
+            await Task.Delay(new Random().Next(200, 2000));
+            _logger.LogWarning($"CONSUMER_3 ==>>> message: {message.MessageText} - END");
         }
 
     }
+
 }
