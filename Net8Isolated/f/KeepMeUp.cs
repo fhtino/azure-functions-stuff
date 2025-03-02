@@ -18,31 +18,24 @@ namespace Net8Isolated
 
 
         [Function("KeepMeUp")]
-        public void Run([TimerTrigger("%KeepMeUpTimer%")] TimerInfo myTimer)
+        public async Task Run([TimerTrigger("%KeepMeUpTimer%")] TimerInfo myTimer, FunctionContext ctx, CancellationToken ct)
         {
-            _logger.LogInformation($"KeepMeUp...");
+            _logger.LogInformation($"{nameof(KeepMeUp)} : {ctx.FunctionDefinition.Name}");
+
+            if (ct.IsCancellationRequested)
+            {
+                // do cleanup and exit
+                return;
+            }
 
             if (myTimer.ScheduleStatus is not null)
             {
                 // NOTE: myTimer.ScheduleStatus is null when run interval is less than 1 minute
                 _logger.LogInformation($"Next timer schedule at: {myTimer.ScheduleStatus.Next}");
             }
-        }
-
-
-        [Function("KeepMeUpAsync")]
-        public async Task Run2([TimerTrigger("%KeepMeUpTimer%")] TimerInfo myTimer, CancellationToken ct)
-        {
-            _logger.LogInformation($"KeepMeUpAsync...");
-
-            if (ct.IsCancellationRequested)
-            {
-                // do cleanup...
-                return;
-            }
 
             await Task.CompletedTask;
-        } 
+        }
 
     }
 

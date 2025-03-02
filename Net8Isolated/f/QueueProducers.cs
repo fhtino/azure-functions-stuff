@@ -7,19 +7,34 @@ using Microsoft.Extensions.Logging;
 namespace Net8Isolated
 {
 
-    public class SimpleQueueProducerHttp
+    public class QueueProducers
     {
 
-        private readonly ILogger<SimpleQueueProducerHttp> _logger;
+        private readonly ILogger<QueueProducers> _logger;
 
-        public SimpleQueueProducerHttp(ILogger<SimpleQueueProducerHttp> logger)
+        public QueueProducers(ILogger<QueueProducers> logger)
         {
             _logger = logger;
         }
 
+
         // ---------------------------------------------------------------------------------------------------------------------------
 
-        [Function("SimpleQueueProducerHttp")]
+
+        [Function("QueueProducerTimer")]
+        [QueueOutput("queue1")]
+        public async Task<List<string>> Run([TimerTrigger("0 * * * * *")] TimerInfo myTimer)
+        {
+            await Task.CompletedTask;
+            var outList = Enumerable.Range(0, 2).Select(i => $"HelloWorld from QueueProducerTimer : {i} : {DateTime.Now}").ToList();
+            _logger.LogWarning($"QueueProducerTimer : {outList.Count()}");
+            return outList;
+        }
+
+
+        // ---------------------------------------------------------------------------------------------------------------------------
+
+        [Function("QueueProducerHttp")]
         public MyOutputType SingleItem([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
         {
             _logger.LogInformation($"==>>> START");
@@ -37,37 +52,37 @@ namespace Net8Isolated
             [HttpResult]
             public IActionResult Result { get; set; }
 
-            [QueueOutput("simplequeue")]
+            [QueueOutput("queue1")]
             public string MessageText { get; set; }
         }
 
+
         // ---------------------------------------------------------------------------------------------------------------------------
-        // 
-        [Function("SimpleQueueProducerHttpMulti")]
-        public MyOutputTypeMultiItems MultiItems([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
+        
+        [Function("QueueProducerHttpMulti")]
+        public OutputMultiItems MultiItems([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
         {
             _logger.LogInformation($"==>>> START");
 
-            return new MyOutputTypeMultiItems()
+            return new OutputMultiItems()
             {
                 Result = new OkObjectResult("Welcome to Azure Functions!"),
                 MessageList = Enumerable.Range(0, 10).Select(i => $"{i} : Hello world {DateTime.UtcNow.ToString("O")}").ToList()
             };
         }
 
-
-        public class MyOutputTypeMultiItems
+        public class OutputMultiItems
         {
             [HttpResult]
             public IActionResult Result { get; set; }
 
-            [QueueOutput("simplequeue", Connection = "DataStorage")]
+            [QueueOutput("queue1", Connection = "DataStorage")]
             public List<string> MessageList { get; set; }
         }
 
         // ---------------------------------------------------------------------------------------------------------------------------
 
-        [Function("SimpleQueueProducerHttpMultiQueue")]
+        [Function("QueueProducerHttpMultiQueue")]
         public OutputMultiItemsAndQueues MultiItemsMultiQueues([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req, FunctionContext ctx)
         {
             _logger.LogWarning($"{ctx.FunctionDefinition.Name} ==>>> START");
@@ -87,13 +102,13 @@ namespace Net8Isolated
             [HttpResult]
             public IActionResult Result { get; set; }
 
-            [QueueOutput("simplequeue", Connection = "DataStorage")]
+            [QueueOutput("queue1", Connection = "DataStorage")]
             public List<string> Queue1MessageList { get; set; }
 
-            [QueueOutput("simplequeue2", Connection = "DataStorage")]
+            [QueueOutput("queue2", Connection = "DataStorage")]
             public List<string> Queue2MessageList { get; set; }
 
-            [QueueOutput("simplequeue3", Connection = "DataStorage")]
+            [QueueOutput("queue3", Connection = "DataStorage")]
             public List<string> Queue3MessageList { get; set; }
         }
 
